@@ -9,6 +9,25 @@ watches two island airports in the Bering Sea. Nothing in the code names those
 airports any more: you describe your own in one file and put your addresses in
 `.env`.
 
+## On pribiloftraffic.com
+
+[Flight patterns](https://www.pribiloftraffic.com/flightpatterns/) is the
+go-arounds and holds. [Reception coverage](https://www.pribiloftraffic.com/reception/)
+is how far the St. George antenna hears. [Made it in?](https://www.pribiloftraffic.com/madeit/)
+is the arrival ledger, checked against that antenna.
+
+The same files also feed [St. Paul flights](https://www.pribiloftraffic.com/myflightsnp/),
+[St. George flights](https://www.pribiloftraffic.com/myflightstg/), both approach
+pages, and [the Armchair Dispatcher](https://www.pribiloftraffic.com/armchair/).
+
+As those pages looked on the afternoon of 18 Nov 2026.
+
+![Flight patterns from the St. George receiver: racetracks, a circle, survey lines, and go-arounds.](docs/site/flight-patterns.png)
+
+![Reception coverage: 388 nautical miles on the longest bearing, 18 Nov 2026.](docs/site/reception.png)
+
+![Made it in: 68% of scheduled arrivals at St. Paul, 55% at St. George.](docs/site/made-it.png)
+
 ## What it does
 
 Only the first row is required. Each of the others switches on when you give
