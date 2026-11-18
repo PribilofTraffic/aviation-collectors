@@ -1,0 +1,34 @@
+{
+  "_about": "Describes the airports this deployment watches. Copy to site.json and edit. This example is a real setup: two island airports in the Bering Sea, served from Anchorage.",
+
+  "timezone": "America/Anchorage",
+
+  "airports": [
+    {
+      "icao": "PASN",
+      "name": "St. Paul Island",
+      "short_name": "St. Paul",
+      "lat": 57.1673,
+      "lon": -170.2205,
+      "place": { "name": "St. Paul", "lat": 57.1553, "lon": -170.2225 }
+    },
+    {
+      "icao": "PAPB",
+      "name": "St. George Island",
+      "short_name": "St. George",
+      "lat": 56.5778,
+      "lon": -169.6625,
+      "place": { "name": "St. George", "lat": 56.5783, "lon": -169.6633 }
+    }
+  ],
+
+  "hub": { "icao": "PANC", "name": "Anchorage" },
+
+  "coverage_site": { "name": "St. George", "icao": "PAPB" },
+
+  "excluded_ident_prefixes": ["FLC"],
+
+  "operator_display_names": { "GTA": "Grant Aviation", "AER": "Ace Air Cargo" },
+
+  "timetable": { "operator": "Grant Aviation", "file": "grant_schedule.json" }
+}

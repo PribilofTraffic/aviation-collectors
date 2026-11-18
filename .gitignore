@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.env
+*.log
+*.log.*
+data/
+backups/
+# A deployment's own site description and aircraft list stay local
+config/site.json
+config/known_aircraft.json
+*.bak
+*.tar

@@ -1,0 +1,41 @@
+{
+ "_note": "Real flight_record_pasn.json day entries captured 2026-08-30 morning. AER66 is ONE trip PANC -> fuel stop (PABE) -> PASN -> PAPB; FlightAware files the last hop as its own -sw- leg from Bethel, so the PANC filing ends the day \"superseded\" and the ledger reads as if a flight from Bethel came in.",
+ "pasn_2026-08-29": [
+  {
+   "ident": "AER66",
+   "operator": "AER",
+   "operator_name": "Ace Air Cargo",
+   "aircraft_type": "B190",
+   "origin": "PANC",
+   "origin_city": "Anchorage",
+   "when": "2026-08-30T02:44:42+00:00",
+   "actual_on": null,
+   "cancelled": false,
+   "diverted": false,
+   "id": "AER66-1787817749-airline-1059p",
+   "outcome": "superseded",
+   "lookup_attempts": 3
+  },
+  {
+   "ident": "AER66",
+   "operator": "AER",
+   "operator_name": "Ace Air Cargo",
+   "aircraft_type": "B190",
+   "origin": "PABE",
+   "origin_city": "Bethel",
+   "when": "2026-08-30T06:14:00+00:00",
+   "actual_on": "2026-08-30T06:14:00Z",
+   "cancelled": false,
+   "diverted": false,
+   "id": "AER66-1788055599-sw-338p",
+   "outcome": "landed",
+   "adsb": {
+    "verdict": "landed",
+    "landed_at": "2026-08-29T22:16:14.478215",
+    "departed_at": "2026-08-29T22:42:21.219866",
+    "missed": 0,
+    "missed_at": []
+   }
+  }
+ ]
+}

@@ -1,0 +1,140 @@
+{
+    "known_aircraft": {
+        "N24GN": {
+            "operator": "Grant Aviation",
+            "type": "Beech King Air 200",
+            "routes": [
+                "PASN",
+                "PAPB"
+            ],
+            "nickname": "the Grant King Air",
+            "notes": "Regular scheduled service"
+        },
+        "N55SR": {
+            "operator": "Grant Aviation",
+            "type": "Beech King Air 200",
+            "routes": [
+                "PASN",
+                "PAPB"
+            ],
+            "nickname": "another Grant bird",
+            "notes": "Regular scheduled service"
+        },
+        "N11MM": {
+            "operator": "Security Aviation",
+            "type": "Security Aviation aircraft",
+            "routes": [
+                "PASN",
+                "PAPB"
+            ],
+            "nickname": "a Security Aviation flight",
+            "notes": "Security Aviation tail number"
+        },
+        "N318AK": {
+            "operator": "Security Aviation",
+            "type": "Security Aviation aircraft",
+            "routes": [
+                "PASN",
+                "PAPB"
+            ],
+            "nickname": "a Security Aviation flight",
+            "notes": "Security Aviation tail number"
+        },
+        "N441SK": {
+            "operator": "Security Aviation",
+            "type": "Security Aviation aircraft",
+            "routes": [
+                "PASN",
+                "PAPB"
+            ],
+            "nickname": "a Security Aviation flight",
+            "notes": "Security Aviation tail number"
+        },
+        "N441BD": {
+            "operator": "Security Aviation",
+            "type": "Security Aviation aircraft",
+            "routes": [
+                "PASN",
+                "PAPB"
+            ],
+            "nickname": "a Security Aviation flight",
+            "notes": "Security Aviation tail number"
+        },
+        "SVX": {
+            "operator": "Security Aviation",
+            "type": "Various",
+            "routes": [
+                "PASN",
+                "PAPB"
+            ],
+            "nickname": "the Security Aviation flight",
+            "notes": "Scheduled cargo/passenger service",
+            "match_type": "prefix"
+        },
+        "AER": {
+            "operator": "Alaska Central Express",
+            "type": "Cargo aircraft",
+            "routes": [
+                "PASN",
+                "PAPB"
+            ],
+            "nickname": "the ACE cargo flight",
+            "notes": "Scheduled cargo (KO66/AER66) plus charters and extras under any AER number",
+            "match_type": "prefix"
+        },
+        "SRY": {
+            "operator": "Aleutian Airways",
+            "type": "Saab 2000",
+            "routes": [
+                "PASN"
+            ],
+            "nickname": "the Aleutian Saab",
+            "notes": "Scheduled passenger service Sun/Tue/Thu (VC1801 flies as SRY1801) plus charters under any SRY number",
+            "match_type": "prefix"
+        },
+        "GUN": {
+            "operator": "Grant Aviation",
+            "type": "Beech King Air 200",
+            "routes": [
+                "PASN",
+                "PAPB"
+            ],
+            "nickname": "the Grant King Air",
+            "notes": "Grant's ICAO code. Rarely files a plan; when it does the ident is GUN + the last three of the tail (GUN5SR = N55SR) while the aircraft broadcasts its tail on ADS-B -- see adsb_ground_truth.antenna_idents()",
+            "match_type": "prefix"
+        }
+    },
+    "operators": {
+        "Grant Aviation": {
+            "description": "Primary scheduled carrier to the Pribilofs",
+            "common_types": [
+                "Beech King Air 200"
+            ]
+        },
+        "Security Aviation": {
+            "description": "Cargo and passenger service to rural Alaska",
+            "common_types": [
+                "Various"
+            ]
+        },
+        "Alaska Central Express": {
+            "description": "Cargo carrier serving Alaska",
+            "common_types": [
+                "Various cargo aircraft"
+            ]
+        },
+        "Aleutian Airways": {
+            "description": "Scheduled passenger service Anchorage to St. Paul, Sun/Tue/Thu",
+            "common_types": [
+                "Saab 2000"
+            ]
+        }
+    },
+    "notes": {
+        "last_updated": "2026-08-31",
+        "match_types": {
+            "exact": "Match full callsign exactly",
+            "prefix": "Match if callsign starts with this string"
+        }
+    }
+}
