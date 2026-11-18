@@ -24,6 +24,7 @@ AVIATION_TAR1090_URL.
 
 import json
 import os
+import re
 import time
 from zoneinfo import ZoneInfo
 
@@ -185,6 +186,28 @@ HUB_DEPARTURES_FILE = data_path(f'{HUB_ICAO.lower()}_departures.json')
 
 # Which receiver the reception-coverage feed describes.
 COVERAGE_SITE = SITE.get('coverage_site') or {}
+
+# A link to a live radar page for one aircraft, as a template with {hex},
+# {lat}, {lon} and {zoom}: usually a path on your own site that proxies
+# tar1090. Optional; without it events carry no radar link.
+RADAR_LINK = SITE.get('radar_link')
+_ICAO_HEX = re.compile(r'[0-9a-fA-F]{6}')
+
+
+def valid_hex(hex_id):
+    """An ICAO address is exactly six hex characters. Anything else (a
+    tar1090 "~" address, a stray string) must not be put into a link."""
+    return bool(_ICAO_HEX.fullmatch(str(hex_id or '')))
+
+
+def radar_url(hex_id, lat, lon, zoom):
+    """The radar link for one aircraft, or None when there is no template or
+    the address is not a plain ICAO hex. The value ends up in an href on a
+    public page, so it is validated here, never trusted from a feed."""
+    if not RADAR_LINK or not valid_hex(hex_id):
+        return None
+    return RADAR_LINK.format(hex=hex_id, lat=f'{lat:.4f}', lon=f'{lon:.4f}', zoom=zoom)
+
 
 # Callsign prefixes that are never a scheduled arrival (flight inspection).
 EXCLUDED_IDENT_PREFIXES = tuple(SITE.get('excluded_ident_prefixes') or ())

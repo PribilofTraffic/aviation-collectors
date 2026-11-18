@@ -150,7 +150,7 @@ def _event(kind, callsign, hex_id, airport, start, end, pts, all_pts=()):
         'airport': airport,
         'bearing_deg': int(round(brg)),
         'distance_nm': round(dist, 1),
-        'radar_url': f'/papb1090/?icao={hex_id}&lat={clat:.4f}&lon={clon:.4f}&zoom=12',
+        'radar_url': settings.radar_url(hex_id, clat, clon, 12),
         'source': 'adsb_history',
         'track': _track(all_pts, airport, start, end),
     }

@@ -171,7 +171,8 @@ def build_output(meta, best_ring, now):
     return {
         'generated': now.isoformat(),
         'generated_display': now.strftime('%B %d, %Y at %I:%M %p %Z'),
-        'source': SOURCE_URL,
+        # A label, never the address: this file is served to the public.
+        'source': 'ADSb-Vue /cone',
         'site': dict(
             SITE,
             lat=meta.get('recv_lat'),

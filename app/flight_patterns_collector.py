@@ -88,9 +88,9 @@ def rewrite_radar_url(hex_id, lat, lon):
     hex_id lands unescaped in an href on the public page, so it must be
     validated here rather than trusted from the container's JSON: an ICAO
     address is exactly 6 hex characters."""
-    if not re.fullmatch(r'[0-9a-fA-F]{6}', str(hex_id or '')):
+    if not settings.valid_hex(hex_id):
         raise ValueError(f'refusing to build a radar URL from a malformed hex_id: {hex_id!r}')
-    return f'/papb1090/?icao={hex_id}&lat={lat:.4f}&lon={lon:.4f}&zoom=13'
+    return settings.radar_url(hex_id, lat, lon, 13)   # None when no radar_link is set
 
 
 def alaska_iso(value):

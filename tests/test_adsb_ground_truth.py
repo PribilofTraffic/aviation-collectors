@@ -174,5 +174,21 @@ class IdentAliases(unittest.TestCase):
         self.assertEqual(out['verdict'], 'none')
 
 
+
+
+class TestRadarLink(unittest.TestCase):
+    """settings.radar_url() is the only place a radar link is built."""
+
+    def test_plain_icao_hex_builds_the_link(self):
+        import settings
+        self.assertEqual(settings.radar_url('a03000', 56.93792, -170.27297, 12),
+                         '/papb1090/?icao=a03000&lat=56.9379&lon=-170.2730&zoom=12')
+
+    def test_anything_else_gives_no_link(self):
+        import settings
+        for bad in ('a03000"><script>', '~298abc', '', None, 'a0300', 'a030000', 'javascript:1'):
+            self.assertIsNone(settings.radar_url(bad, 57.0, -170.0, 12), bad)
+
+
 if __name__ == '__main__':
     unittest.main()

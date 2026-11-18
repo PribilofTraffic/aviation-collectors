@@ -60,6 +60,7 @@ climbed back out (it did not), and that verdict wins.
    | `airports` | One entry per airport: `icao`, `name`, `lat`, `lon`. `short_name` is what the feeds call it in sentences. `place` is optional: a nearby point to measure "13 NM S of ..." from, if you would rather not use the runway. |
    | `hub` | Optional. The airport your scheduled flights leave from (`icao`, `name`). |
    | `coverage_site` | Optional. A name and ICAO stamped on the reception-range feed. |
+   | `radar_link` | Optional. A link to your live radar page for one aircraft, with `{hex}`, `{lat}`, `{lon}` and `{zoom}` filled in per event. Without it events carry no radar link. |
    | `excluded_ident_prefixes` | Optional. Callsign prefixes that are never a scheduled arrival, such as flight-inspection aircraft. |
    | `operator_display_names` | Optional. Names for three-letter operator codes, such as `"AER": "Ace Air Cargo"`. |
    | `timetable` | Optional. See "An operator that does not file" below. |
@@ -175,7 +176,7 @@ repository, so the host script and the container use the same values. Set
 python3 -m unittest discover -s tests
 ```
 
-185 tests, run against recordings of real days. They use the example site
+187 tests, run against recordings of real days. They use the example site
 file, so they need no setup.
 
 ## Licence

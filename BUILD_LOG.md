@@ -97,6 +97,11 @@ atomic writes prevent a torn file, they do nothing for a file that is gone.
 - **Gotcha #4**: with `env_file: .env` the container would receive every
   secret in a shared `.env`. The compose block lists its variables by name
   instead.
+- **Gotcha #5** (caught by the post-push security review): the reception
+  feed carried the collector's source address in a public file, and the
+  go-around events built a radar link from an aircraft address without
+  checking it. The feed now carries a label, and `settings.radar_url()` is
+  the only place a radar link is built: six hex characters or no link.
 - Trial: ran the image as `aviation-trial` against the real receivers,
   writing to `/home/zemchug/aviation_trial/`, beside the live systemd service
   and cron jobs. Compared database rows per minute and the JSON feeds.

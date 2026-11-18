@@ -26,6 +26,8 @@
 
   "coverage_site": { "name": "St. George", "icao": "PAPB" },
 
+  "radar_link": "/papb1090/?icao={hex}&lat={lat}&lon={lon}&zoom={zoom}",
+
   "excluded_ident_prefixes": ["FLC"],
 
   "operator_display_names": { "GTA": "Grant Aviation", "AER": "Ace Air Cargo" },
