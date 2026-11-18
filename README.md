@@ -28,6 +28,9 @@ As those pages looked on the afternoon of 18 Nov 2026.
 
 ![Made it in: 68% of scheduled arrivals at St. Paul, 55% at St. George.](docs/site/made-it.png)
 
+The Docker setup on the island started from the SDR Enthusiasts guide,
+[ADS-B Reception, Decoding & Sharing with Docker](https://sdr-enthusiasts.gitbook.io/ads-b).
+
 ## What it does
 
 Only the first row is required. Each of the others switches on when you give
