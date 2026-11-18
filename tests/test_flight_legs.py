@@ -151,5 +151,18 @@ class TestLedgerDay(unittest.TestCase):
         self.assertEqual(days['2026-08-29'][0]['via_city'], ['Bethel'])
 
 
+
+
+class TestStatusMessages(unittest.TestCase):
+    """aviation_status.json is public; no address may reach it."""
+
+    def test_addresses_are_removed(self):
+        import run
+        text = run.public('adsb_coverage_collect.py exited 1: FAILED: could not reach '
+                          'http://192.0.2.7:24556/cone: timed out')
+        self.assertNotIn('192.0.2.7', text)
+        self.assertIn('could not reach (address hidden) timed out', text)
+
+
 if __name__ == '__main__':
     unittest.main()

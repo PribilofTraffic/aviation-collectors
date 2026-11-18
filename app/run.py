@@ -19,6 +19,7 @@ Rules the loop keeps:
 
 import json
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -71,6 +72,12 @@ def _on_signal(signum, frame):
 
 def log(message):
     print(f'[{datetime.now(settings.TZ):%Y-%m-%d %H:%M:%S %Z}] {message}', flush=True)
+
+
+def public(message):
+    """A job message that is safe to publish: the status file sits in the data
+    folder, which is usually served to the web, so addresses are removed."""
+    return re.sub(r'\b\w+://\S+', '(address hidden)', str(message))[:300]
 
 
 def load_json(path):
@@ -158,7 +165,7 @@ def main():
                 'interval_s': interval,
                 'last_run': datetime.fromtimestamp(started, settings.TZ).isoformat(timespec='seconds'),
                 'took_s': round(time.time() - started, 1),
-                'message': message,
+                'message': public(message),
             }
             try:
                 write_json(STATE_FILE, state)

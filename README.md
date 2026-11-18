@@ -176,7 +176,7 @@ repository, so the host script and the container use the same values. Set
 python3 -m unittest discover -s tests
 ```
 
-187 tests, run against recordings of real days. They use the example site
+188 tests, run against recordings of real days. They use the example site
 file, so they need no setup.
 
 ## Licence
