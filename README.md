@@ -230,6 +230,21 @@ python3 -m unittest discover -s tests
 188 tests, run against recordings of real days. They use the example site
 file, so they need no setup.
 
+## Where this came from
+
+The idea is older than the AI help. It began years ago as hand-written scripts beside an ADS-B receiver on a
+Raspberry Pi, to answer the question everyone on the islands asks: did the
+plane make it in?
+It was written and run that way, without AI, long before any was involved.
+
+AI came later, as an assistant. Claude helped tidy the code, add tests, find
+bugs and package it as a container other people can run. The ideas, and the
+judgement about what matters on these islands, are the maintainer's own.
+
+Most of the Pribilof Traffic collectors started on Raspberry Pis, and
+Raspberry Pis on the islands still run the webcam and the aircraft (tar1090)
+and ACARS receivers today.
+
 ## Licence
 
 MIT. See `LICENSE`.
