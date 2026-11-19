@@ -192,6 +192,35 @@ repository, so the host script and the container use the same values. Set
   numbers, dates, an antenna in the Pribilof Islands). They are kept because
   each explains why a rule is the way it is.
 
+## How the original site is wired up
+
+On pribiloftraffic.com the pieces are in different places, which is common:
+
+- **The receivers are Raspberry Pis on the islands.** The server that runs
+  this container is somewhere else. They are joined by
+  [ZeroTier](https://www.zerotier.com/), a private network, so the container
+  reads `aircraft.json` from each Pi's ZeroTier address.
+- **nginx serves the website** as plain files. The JSON this container writes
+  is made visible to it either by pointing the data folder at a folder nginx
+  already serves, or with an nginx `alias`. The pages then fetch
+  `/data/flight_patterns.json` and the rest like any other file.
+- **nginx also reverse-proxies the receivers' own web pages** (tar1090 and
+  friends) under paths on the site, because a visitor's browser cannot reach
+  a private address. That is for the live map; this container does not need
+  it.
+- **Cloudflare sits in front** for HTTPS and caching.
+
+None of this is required. The container only needs an address it can reach
+and a folder to write to.
+
+- **Any private network will do in place of ZeroTier:** Tailscale, NetBird,
+  Headscale or plain WireGuard. Docker containers go out through the host, so
+  whatever the host can reach, the container can reach. With Tailscale, put
+  the device's `100.x.x.x` address in `.env`; its device names often do not
+  resolve inside a container.
+- **Any web server will do in place of nginx.** It only has to serve the
+  files in the data folder. Nothing here needs to be proxied.
+
 ## Tests
 
 ```
