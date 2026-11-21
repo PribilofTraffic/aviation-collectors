@@ -40,7 +40,6 @@ it the setting in the last column.
 |---|---|---|---|
 | Aircraft history | 60 s | `adsb_history.db` (SQLite, one row per aircraft per poll) | `AVIATION_TAR1090_URL` |
 | Go-arounds and holds | 5 min | `flight_patterns.json`, with a track for each event | airports in `site.json` |
-| Aircraft counts | 6 h | `aircraft_stats.json` | the history database |
 | Scheduled arrivals and the arrival ledger | 2 h | `flight_plans_<icao>.json`, `flight_record_<icao>.json` | `AVIATION_FA_AEROAPI_KEY` |
 | "Heard departing" from the hub airport | 2 min | `<hub>_departures.json` | `AVIATION_HUB_TAR1090_URL` |
 | Reception range | 30 min | `adsb_coverage.json` | `AVIATION_COVERAGE_URL` (ADSb-Vue) |

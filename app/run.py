@@ -56,8 +56,6 @@ JOBS = (
      ('adsb_coverage_collect.py',), lambda: bool(settings.COVERAGE_URL)),
     ('flights', settings.get_int('AVIATION_FLIGHTS_INTERVAL', 7200),
      ('flight_plans_collect.py', 'flight_arrival_record.py'), _flights_on),
-    ('aircraft_stats', settings.get_int('AVIATION_STATS_INTERVAL', 21600),
-     ('generate_aircraft_stats.py',), lambda: os.path.isfile(settings.DB_PATH)),
     ('backup', settings.get_int('AVIATION_BACKUP_INTERVAL', 86400),
      ('backup.py',), lambda: bool(BACKUP_DIR)),
 )
