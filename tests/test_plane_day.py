@@ -175,5 +175,88 @@ class TestAntenna(unittest.TestCase):
         self.assertFalse(plane_day.radar_match('', GUN5SR))
 
 
+# The departure clock. Real filings of 2026-11-22, the day the owner raised it:
+# SRY1801 due off Anchorage 18:40Z (9:40 AM AKST), never left (cancelled for
+# weather, which FlightAware had not posted by 3 PM). AER66 left Bethel, which
+# our antenna cannot hear, at 22:31Z.
+SRY1801_1122 = {
+    "ident": "SRY1801", "operator": "SRY", "operator_name": "Aleutian Airways",
+    "origin": "PANC", "destination": "PASN", "aircraft_type": "SB20",
+    "scheduled_off": "2026-11-22T18:40:00Z", "estimated_off": "2026-11-22T18:40:00Z",
+    "actual_off": None, "when": "2026-11-22T20:40:00+00:00",
+    "estimated_on": "2026-11-22T20:40:00Z", "actual_on": None,
+    "cancelled": False, "diverted": False,
+}
+AER66_1122 = {
+    "ident": "AER66", "operator": "AER", "origin": "PABE", "destination": "PASN",
+    "scheduled_off": "2026-11-22T22:00:00Z", "estimated_off": "2026-11-22T22:00:00Z",
+    "actual_off": None, "when": "2026-11-23T00:05:59+00:00",
+    "cancelled": False, "diverted": False,
+}
+
+
+def nov22(hhmm_utc):
+    h, m = hhmm_utc.split(':')
+    return datetime(2026, 11, 22, int(h), int(m), tzinfo=timezone.utc)
+
+
+def watch_file(written):
+    return {'day_key': '2026-11-22', 'generated': written.isoformat(), 'departures': {}}
+
+
+class TestDepartureClock(unittest.TestCase):
+    def test_the_real_day_is_flagged_an_hour_after_departure(self):
+        # 19:40Z = 10:40 AM AKST, two and a half hours before the ETA rule.
+        self.assertTrue(plane_day.not_departed(SRY1801_1122, watching=True, now=nov22('19:40')))
+        self.assertFalse(plane_day.is_overdue(SRY1801_1122, now=nov22('19:40')))
+
+    def test_inside_the_grace_hour_is_not_flagged(self):
+        self.assertFalse(plane_day.not_departed(SRY1801_1122, watching=True, now=nov22('19:39')))
+
+    def test_a_posted_delay_moves_the_clock(self):
+        late = dict(SRY1801_1122, estimated_off='2026-11-22T20:30:00Z')
+        self.assertFalse(plane_day.not_departed(late, watching=True, now=nov22('20:00')))
+        self.assertTrue(plane_day.not_departed(late, watching=True, now=nov22('21:30')))
+
+    def test_falls_back_to_the_schedule(self):
+        bare = dict(SRY1801_1122, estimated_off=None)
+        self.assertTrue(plane_day.not_departed(bare, watching=True, now=nov22('19:40')))
+
+    def test_heard_or_airborne_or_landed_is_not_held(self):
+        now = nov22('20:00')
+        self.assertFalse(plane_day.not_departed(SRY1801_1122, heard={'seen_display': '9:52 AM'},
+                                                watching=True, now=now))
+        for key, value in (('actual_off', '2026-11-22T18:55:00Z'),
+                           ('actual_on', '2026-11-22T20:41:00Z'),
+                           ('cancelled', True), ('diverted', True)):
+            with self.subTest(key=key):
+                self.assertFalse(plane_day.not_departed(dict(SRY1801_1122, **{key: value}),
+                                                        watching=True, now=now))
+
+    def test_an_origin_our_antenna_cannot_hear_is_never_held(self):
+        # AER66 from Bethel: silence from Anchorage means nothing there.
+        self.assertFalse(plane_day.not_departed(AER66_1122, watching=True, now=nov22('23:30')))
+
+    def test_a_stopped_watch_proves_nothing(self):
+        self.assertFalse(plane_day.not_departed(SRY1801_1122, watching=False, now=nov22('20:00')))
+
+    def test_no_departure_time_is_never_a_guess(self):
+        bare = dict(SRY1801_1122, estimated_off=None, scheduled_off=None)
+        self.assertFalse(plane_day.not_departed(bare, watching=True, now=nov22('23:00')))
+        garbage = dict(SRY1801_1122, estimated_off='soon')
+        self.assertFalse(plane_day.not_departed(garbage, watching=True, now=nov22('23:00')))
+
+    def test_watch_freshness(self):
+        now = nov22('19:40')
+        self.assertTrue(plane_day.watch_is_fresh(watch_file(now - timedelta(minutes=3)), now=now))
+        self.assertFalse(plane_day.watch_is_fresh(watch_file(now - timedelta(minutes=11)), now=now))
+        self.assertFalse(plane_day.watch_is_fresh({}, now=now))
+        self.assertFalse(plane_day.watch_is_fresh(None, now=now))
+        self.assertFalse(plane_day.watch_is_fresh({'generated': 'yesterday'}, now=now))
+        # A local-time stamp with its offset, the way the watch writes it.
+        self.assertTrue(plane_day.watch_is_fresh(
+            {'generated': '2026-11-22T10:38:01.8-09:00'}, now=now))
+
+
 if __name__ == '__main__':
     unittest.main()
