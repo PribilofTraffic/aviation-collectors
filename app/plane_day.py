@@ -57,6 +57,56 @@ def is_overdue(flight, heard=None, now=None, grace_min=OVERDUE_GRACE_MIN):
     return now - eta >= timedelta(minutes=grace_min)
 
 
+# The departure clock (owner, 2026-11-22): "the best one is seeing if it
+# departed at its scheduled time, but it could be on weather hold too." The
+# overdue rule above waits for the ARRIVAL time plus 90 minutes (1:10 PM for
+# SRY1801); the plane's failure to leave Anchorage is known hours sooner.
+# Our Anchorage antenna (panc_departure_watch.py, every 2 minutes) hears a
+# watched flight climb out, so an hour past its departure time with the watch
+# running and nothing heard means it is still on the ground there. That says
+# nothing about WHY (weather hold, delay or cancellation) and must not.
+DEPARTURE_GRACE_MIN = 60
+WATCH_FRESH_MIN = 10            # the watch writes every 2 minutes
+WATCHED_ORIGINS = ('PANC',)     # the only airport our antenna can hear leaving
+
+
+def watch_is_fresh(panc_feed, now=None, fresh_min=WATCH_FRESH_MIN):
+    """True when the Anchorage departure watch wrote its file in the last
+    fresh_min minutes. A stopped watch proves nothing about a departure, so
+    a stale or missing file must never read as "not heard"."""
+    written = _parse((panc_feed or {}).get('generated'))
+    if written is None:
+        return False
+    now = now or datetime.now(timezone.utc)
+    return timedelta(0) <= now - written <= timedelta(minutes=fresh_min)
+
+
+def not_departed(flight, heard=None, watching=False, now=None,
+                 grace_min=DEPARTURE_GRACE_MIN):
+    """True when a flight from a watched airport is grace_min past its
+    departure time, the departure watch is running, and nothing says it left.
+
+    The departure time is FlightAware's estimate when there is one (it moves
+    when the airline posts a delay) and the schedule otherwise. Never true
+    for: an origin our antenna cannot hear (Bethel), a stopped watch, a
+    flight that took off (actual_off, or heard), landed, was cancelled or
+    diverted, or has no departure time at all.
+    """
+    if not flight or not watching:
+        return False
+    if (flight.get('origin') or '').upper() not in WATCHED_ORIGINS:
+        return False
+    if flight.get('actual_on') or flight.get('actual_off') or heard:
+        return False
+    if flight.get('cancelled') or flight.get('diverted'):
+        return False
+    leaves = _parse(flight.get('estimated_off') or flight.get('scheduled_off'))
+    if leaves is None:
+        return False
+    now = now or datetime.now(timezone.utc)
+    return now - leaves >= timedelta(minutes=grace_min)
+
+
 def flight_label(flight):
     """'Aleutian Airways 1801' -- operator name plus the bare flight number,
     the way the commentary names a plane."""
